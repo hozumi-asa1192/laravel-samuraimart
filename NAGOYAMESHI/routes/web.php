@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('shops',ShopController::class);
-Route::resource('reviews',ReviewController::class);
+
+Route::get('/shops/{shop}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+Route::post('/shops/{shop}/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
 
 require __DIR__.'/auth.php';

@@ -53,9 +53,9 @@
         <a href="{{ route('reviews.create',$shop) }}">レビューを書く</a>
          <div class="offset-1 col-10">
          <div class="row">
-                 @foreach($reviews as $review)
+                @foreach($reviews as $review)
                  <div class="offset-md-5 col-md-5">
-                    <h3>{{ str_repeat('★',$review->score) }}</h3>
+                    <h3>{{ str_repeat('★', $review->score) }}</h3>
                     <h3>{{$review->title}}</h3>
                     <p>{{$review->content}}</p>
                     <label>{{$review->created_at}} {{$review->user->name}}</label>

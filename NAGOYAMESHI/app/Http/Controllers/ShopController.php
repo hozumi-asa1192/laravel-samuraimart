@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\shop;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Review;
 
 class ShopController extends Controller
 {
