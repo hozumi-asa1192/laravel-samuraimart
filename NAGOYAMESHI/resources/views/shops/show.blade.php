@@ -37,12 +37,34 @@
                  <div class="row">
                      
                      <div class="col-5">
-                             <i class="fa fa-heart"></i>
-                             お気に入り
-                         </a>
+                     @if($user->paid_member == 0)
+                     <a tabindex="-1" class="btn w-100">
+                        <i class="fa fa-heart"></i>
+                        お気に入り
+                    </a>
+                    @else
+                    @if($user->favorite_shops()->where('shop_id', $shop->id)->exists())
+                                 <a href="{{ route('favorites.destroy', $shop->id) }}" class="btn w-100" onclick="event.preventDefault(); document.getElementById('favorites-destroy-form').submit();">
+                                     <i class="fa fa-heart"></i>
+                                     お気に入り解除
+                                 </a>
+                             @else
+                                 <a href="{{ route('favorites.store', $shop->id) }}" class="btn w-100" onclick="event.preventDefault(); document.getElementById('favorites-store-form').submit();">
+                                     <i class="fa fa-heart"></i>
+                                     お気に入り
+                                 </a>
+                             @endif
+                             @endif
                      </div>
                  </div>
              </form>
+             <form id="favorites-destroy-form" action="{{ route('favorites.destroy', $shop->id) }}" method="POST" class="d-none">
+                     @csrf
+                     @method('DELETE')
+                 </form>
+                 <form id="favorites-store-form" action="{{ route('favorites.store', $shop->id) }}" method="POST" class="d-none">
+                     @csrf
+                 </form>
              @endauth
          </div>
  
@@ -50,19 +72,31 @@
              <hr class="w-100">
              <h3 class="float-left">カスタマーレビュー</h3>
          </div>
+        <div class="offset-1 col-10">
+        @if($user->paid_member == 0)
+        <a tabindex="-1">レビューを書く</a>
+        <a tabindex="-1">予約をする</a>
+        @else
         <a href="{{ route('reviews.create',$shop) }}">レビューを書く</a>
-         <div class="offset-1 col-10">
+        <a href="{{ route('reservations.create',$shop) }}">予約をする</a>
+        @endif
+        
          <div class="row">
+                 
                 @foreach($reviews as $review)
                  <div class="offset-md-5 col-md-5">
-                    <h3>{{ str_repeat('★', $review->score) }}</h3>
+                    <h3>{{(str_repeat('★', $review->score)) }}</h3>
                     <h3>{{$review->title}}</h3>
                     <p>{{$review->content}}</p>
                     <label>{{$review->created_at}} {{$review->user->name}}</label>
                  </div>
                  @endforeach
+                           
              </div><br /> 
          </div>
+         <div class="me-1 mb-4">
+            {{ $reviews->links() }}
+        </div>
      </div>
  </div>
  @endsection

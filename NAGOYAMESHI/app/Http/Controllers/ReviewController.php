@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+
+
+
      /**
       * Display a listing of the resource.
       *
@@ -16,6 +19,13 @@ class ReviewController extends Controller
       */
       public function create(Shop $shop)
       {
+        $user = Auth::user();
+        
+              if($user->paid_member == 0)
+              {
+                 abort(404);
+              }
+              
         return view('reviews.create',compact('shop')); 
       }
   
@@ -28,14 +38,20 @@ class ReviewController extends Controller
      */
     public function store(Request $request,Shop $shop)
     {
-        $review = new Review();
-        $review->title = $request->input('title');
-        $review->content = $request->input('content');
-        $review->shop_id = $request->input('shop_id');
-        $review->user_id = Auth::user()->id;
-        $review->score = $request->input('score');
-        $review->save();
 
-        return view('shops.show',compact('review','shop'));
+        $request->validate([
+          'title' => 'required|max:20',
+          'content' => 'required'
+      ]);
+
+        $reviews = new Review();
+        $reviews->title = $request->input('title');
+        $reviews->content = $request->input('content');
+        $reviews->shop_id = $request->input('shop_id');
+        $reviews->user_id = Auth::user()->id;
+        $reviews->score = $request->input('score');
+        $reviews->save();
+
+        return redirect()->route('shops.show', [$shop]);
     }
 }

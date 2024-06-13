@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\shop;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Review;
@@ -14,11 +15,28 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $shops = Shop::all();
+        $keyword = $request->keyword;
 
-        return view('shops.index',compact('shops'));
+        if($request->category !== null && $keyword !== null)
+        {
+            $shops = Shop::where('category_id',$request->category)->where('name','like',"%{$keyword}%")->paginate(15);
+            $category = Category::find($request->category);
+        }elseif($request->category !== null){
+            $shops = Shop::where('category_id',$request->category)->paginate(15);
+            $category = Category::find($request->category);
+        }elseif($keyword !== null){
+            $shops = Shop::where('name','like',"%{$keyword}%")->paginate(15);
+            $category = null; 
+        }else{
+            $shops = Shop::paginate(15);
+            $category = null; 
+        }
+
+        $categories = Category::all();
+
+        return view('shops.index',compact('shops','category','categories','keyword'));
     }
 
     /**
@@ -59,9 +77,10 @@ class ShopController extends Controller
      */
     public function show(Shop $shop)
     {
-        $reviews = $shop->reviews()->get();
+        $user = Auth::user();
+        $reviews = $shop->reviews()->paginate(5);
 
-        return view('shops.show', compact('shop','reviews'));
+        return view('shops.show', compact('shop','reviews','user'));
     }
 
     /**
@@ -107,4 +126,6 @@ class ShopController extends Controller
   
         return to_route('shops.index');
     }
+
+    
 }
