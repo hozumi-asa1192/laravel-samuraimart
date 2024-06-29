@@ -1,16 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<a class="h5 ms-5" href="{{route('mypage')}}">＜戻る</a>
     <div class="container nagoyameshi-container pb-5">
         <div class="row justify-content-center">
             <div class="col-xl-5 col-lg-6 col-md-8">
-                <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">ホーム</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">有料プラン解約</li>
-                    </ol>
-                </nav>
-
+                
                 <h1 class="mb-3 text-center">有料プラン解約</h1>
 
                 <p>有料プランを解約すると以下の特典を受けられなくなります。本当に解約してもよろしいですか？</p>

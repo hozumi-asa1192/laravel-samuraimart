@@ -1,23 +1,10 @@
 @extends('layouts.app')
 
-@push('scripts')
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        const stripeKey = "{{ env('STRIPE_KEY') }}";
-    </script>
-    <script src="{{ asset('/js/stripe.js') }}"></script>
-@endpush
-
 @section('content')
+<a class="h5 ms-5" href="{{route('mypage')}}">＜戻る</a>
     <div class="container nagoyameshi-container pb-5">
         <div class="row justify-content-center">
             <div class="col-xl-5 col-lg-6 col-md-8">
-                <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('shops.index') }}">ホーム</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">お支払い方法</li>
-                    </ol>
-                </nav>
 
                 <h1 class="mb-3 text-center" id="test">お支払い方法</h1>
 
@@ -59,7 +46,7 @@
 
                 <form id="card-form" action="{{ route('subscription.update') }}" method="post">
                     @csrf
-                    @method('patch')
+                    @method('put')
                     <input type="text" class="nagoyameshi-card-holder-name mb-3" id="card-holder-name" placeholder="カード名義人" required>
                     <div class="nagoyameshi-card-element mb-4" id="card-element"></div>
                 </form>
@@ -69,4 +56,9 @@
             </div>
         </div>
     </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripeKey = "{{ env('STRIPE_KEY') }}";
+    </script>
+    <script src="{{ asset('/js/stripe.js') }}"></script>
 @endsection

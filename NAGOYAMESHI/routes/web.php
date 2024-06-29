@@ -29,8 +29,8 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::resource('shops',ShopController::class);
 
-    Route::get('/shops/{shop}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
-    Route::post('/shops/{shop}/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/shops/{shop}/reviews/create', [ReviewController::class, 'create'])->middleware([Subscribed::class])->name('reviews.create');
+    Route::post('/shops/{shop}/reviews/store', [ReviewController::class, 'store'])->middleware([Subscribed::class])->name('reviews.store');
 
     Route::post('favorites/{shop_id}',[FavoriteController::class,'store'])->name('favorites.store');
     Route::delete('favorite/{shop_id}',[FavoriteController::class,'destroy'])->name('favorites.destroy');
@@ -41,21 +41,21 @@ Route::middleware(['auth','verified'])->group(function () {
          Route::put('users/mypage', 'update')->name('mypage.update');
          Route::get('users/mypage/password/edit','edit_password')->name('mypage.edit_password');
          Route::put('users/mypage/password','update_password')->name('mypage.update_password');
-         Route::get('users/mypage/favorite','favorite')->name('mypage.favorite');
-         Route::get('users/mypage/reservation', 'reservation')->name('mypage.reservation');
+         Route::get('users/mypage/favorite','favorite')->middleware([Subscribed::class])->name('mypage.favorite');
+         Route::get('users/mypage/reservation', 'reservation')->middleware([Subscribed::class])->name('mypage.reservation');
      });
 
-    Route::get('/shops/{shop}/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-    Route::post('/shops/{shop}/reservations/store', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/shops/{shop}/reservations/create', [ReservationController::class, 'create'])->middleware([Subscribed::class])->name('reservations.create');
+    Route::post('/shops/{shop}/reservations/store', [ReservationController::class, 'store'])->middleware([Subscribed::class])->name('reservations.store');
     Route::delete('reservation/{reservation_id}',[ReservationController::class,'destroy'])->name('reservations.destroy');
 
     Route::controller(SubscriptionController::class)->group(function () {
-        Route::get('subscription/create', 'create')->middleware([Subscribed::class])->name('subscription.create');
-        Route::post('subscription','store')->middleware([Subscribed::class])->name('subscription.store');
-        Route::get('subscription/edit', 'edit')->middleware([NotSubscribed::class])->name('subscription.edit');
-        Route::put('subscription', 'update')->middleware([NotSubscribed::class])->name('subscription.update');
-        Route::get('subscription/cancel','cancel')->middleware([NotSubscribed::class])->name('subscription.cancel');
-        Route::delete('subscription','destroy')->middleware([NotSubscribed::class])->name('subscription.destroy');
+        Route::get('subscription/create', 'create')->middleware([NotSubscribed::class])->name('subscription.create');
+        Route::post('subscription','store')->middleware([NotSubscribed::class])->name('subscription.store');
+        Route::get('subscription/edit', 'edit')->middleware([Subscribed::class])->name('subscription.edit');
+        Route::put('subscription', 'update')->middleware([Subscribed::class])->name('subscription.update');
+        Route::get('subscription/cancel','cancel')->name('subscription.cancel');
+        Route::delete('subscription','destroy')->name('subscription.destroy');
     });
 
 });

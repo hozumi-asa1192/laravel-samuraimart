@@ -40,12 +40,12 @@
                      </div>
                  </div>
  
-                 <div class="form-group">
-                     <button type="submit" class="mt-3 btn samuraimart-submit-button w-100">
+                 <div class="form-group text-center">
+                     <button type="submit" class="mt-3 btn btn-warning w-50 mx-auto">
                          ログイン
                      </button>
  
-                     <a class="btn btn-link mt-3 d-flex justify-content-center samuraimart-login-text" href="{{ route('password.request') }}">
+                     <a class="btn btn-link mt-3 d-flex justify-content-center text-dark" href="{{ route('password.request') }}">
                          パスワードをお忘れの場合
                      </a>
                  </div>
@@ -54,7 +54,7 @@
              <hr>
  
              <div class="form-group">
-                 <a class="btn btn-link mt-3 d-flex justify-content-center samuraimart-login-text" href="{{ route('register') }}">
+                 <a class="btn btn-link mt-3 d-flex justify-content-center text-dark" href="{{ route('register') }}">
                      新規登録
                  </a>
              </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class SubscriptionController extends Controller
 {
 
@@ -60,11 +61,11 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {        
         $request->user()->updateDefaultPaymentMethod(
-            '$request->paymentMethodId'
-        )->update($request->paymentMethodId);
+            $request->paymentMethodId
+        );
         
         return redirect()->route('shops.index')->with('flash_message', 'お支払方法を変更しました。');
     }
@@ -81,11 +82,9 @@ class SubscriptionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
-    {
-        $request->user()->subscription('premium_plan')->canceled();
+    { 
+        $request->user()->subscription('premium_plan')->cancelNow();
 
         return redirect()->route('shops.index')->with('flash_message', '有料プランを解約しました。');
     }
-    
-    
 }

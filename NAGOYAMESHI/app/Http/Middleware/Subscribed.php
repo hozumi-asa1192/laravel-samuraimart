@@ -18,6 +18,7 @@ class Subscribed
      */
     public function handle(Request $request, Closure $next): Response
     {
+        
         if(! $request->user()?->subscribed('premium_plan')){
             return redirect()->route('subscription.create');
         }

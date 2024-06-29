@@ -12,9 +12,12 @@
     
         <!-- Font Awesome -->
         <script src="https://kit.fontawesome.com/758ba40309.js" crossorigin="anonymous"></script>
+
+        <!-- stylesheet -->
+        <link href="{{ asset('css\nagoyameshi.css')}}" rel="stylesheet">
     
     </head>
-    <body>
+    <body class="nagoyamesi-background-color">
     <div id="app">
     @component('components.header')
     @endcomponent

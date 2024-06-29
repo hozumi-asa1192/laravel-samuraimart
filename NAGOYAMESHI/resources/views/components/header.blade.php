@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-md navbar-light shadow-sm samuraimart-header-container">
+<nav class="navbar navbar-expand-md navbar-light bg-warning shadow-sm samuraimart-header-container">
      <div class="container">
-         <a class="navbar-brand" href="{{ url('shops') }}">
+         <a class="navbar-brand" href="{{ url('/') }}">
              {{ config('app.name', 'Laravel') }}
          </a>
  
@@ -20,12 +20,12 @@
                  @else
                      <li class="nav-item mr-5">
                         <a class="nav-link" href="{{ route('mypage') }}">
-                            <i class="fas fa-user mr-1"></i><label>マイページ</label>
+                            <label class="fw-bold">マイページ</label>
                         </a>
                      </li>
                      <li class="nav-item mr-5">
-                        <a class="nav-link" href="{{ route('mypage.favorite') }}">
-                            <i class="far fa-heart"></i>
+                        <a class="nav-link" href="{{ route('subscription.create') }}">
+                        <label class="fw-bold">有料会員</label>
                         </a>
                     </li>
                  @endguest

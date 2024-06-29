@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
 use App\Models\Shop;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use DateTime;
 
 class UserController extends Controller
 {
@@ -73,7 +75,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $favorite_shops = $user->favorite_shops;
+        $favorite_shops = $user->favorite_shops()->paginate(5);
 
         return view('users.favorite',compact('favorite_shops'));
     }
@@ -83,10 +85,18 @@ class UserController extends Controller
     
         $user = Auth::user();
         
-        $reservations =  Reservation::with('shop')->where('user_id',$user->id)->get();
+        $reservations =  Reservation::with('shop')->where('user_id',$user->id)->paginate(5);
 
-        return view('users.reservation',compact('reservations'));
+        $reservated_date = $reservations['reserved_date'];
+
+        $date = new DateTime($reservated_date);
+
+        return view('users.reservation',compact('reservations','date'));
     }
 
+    public function hasActiveSubscription()
+    {
+        return $this->subscription('premium_plan')->where('status', 'active')->exists();
+    }
     
 }

@@ -17,13 +17,10 @@ class ReservationController extends Controller
     public function create(Shop $shop)
     {
         $user = Auth::user();
-        
-              if($user->paid_member == 0)
-              {
-                abort(404);
-              }
 
-        return view('reservations.create',compact('shop'));
+        $i = 1;
+        
+        return view('reservations.create',compact('shop','i'));
     }
 
     /**
@@ -35,15 +32,14 @@ class ReservationController extends Controller
     public function store(Request $request,Shop $shop)
     {
         $request->validate([
-            'reservation_date' => 'required|date|after:yesterday',
-            'reservation_time' => 'required|after:"now"',
-            'person_num' => 'required',
+            'reserved_date' => 'required|date|after_or_equal:today',
+            'number_of_people' => 'required',
         ]);
 
         $reservation = new Reservation();
-        $reservation->reservation_date = $request->input('reservation_date');
-        $reservation->reservation_time = $request->input('reservation_time');
-        $reservation->person_num = $request->input('person_num');
+        $reservation->reserved_date = $request->input('reserved_date');
+        $reservation->reserved_time = $request->input('reserved_time');
+        $reservation->number_of_people = $request->input('number_of_people');
         $reservation->shop_id = $request->input('shop_id');
         $reservation->user_id = Auth::user()->id;
         $reservation->save();

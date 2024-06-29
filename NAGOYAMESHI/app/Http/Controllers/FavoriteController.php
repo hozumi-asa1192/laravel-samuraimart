@@ -11,11 +11,6 @@ class FavoriteController extends Controller
     public function store($shop_id)
     {
         $user = Auth::user();
-        
-              if($user->paid_member == 0)
-              {
-                abort(404);
-              }
 
         Auth::user()->favorite_shops()->attach($shop_id);
 

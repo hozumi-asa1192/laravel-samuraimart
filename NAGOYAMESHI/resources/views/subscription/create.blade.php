@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@push('scripts')
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        const stripeKey = "{{ env('STRIPE_KEY') }}";
-    </script>
-    <script src="{{ asset('/js/stripe.js') }}"></script>
-@endpush
-
 @section('content')
     <div class="container nagoyameshi-container pb-5">
         <div class="row justify-content-center">
@@ -58,4 +50,10 @@
             </div>
         </div>
     </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripeKey = "{{ env('STRIPE_KEY') }}"; 
+        console.log(stripeKey);
+    </script>
+    <script src="{{ asset('/js/stripe.js') }}"></script>
 @endsection

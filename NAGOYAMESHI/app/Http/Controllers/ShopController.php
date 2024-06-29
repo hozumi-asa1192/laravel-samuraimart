@@ -19,24 +19,38 @@ class ShopController extends Controller
     {
         $keyword = $request->keyword;
 
+        $sorts = [
+            '新着順' => 'created_at desc',
+            '価格が安い順' => 'start_price asc',
+        ];
+
+        $sort_query = [];
+        $sorted = "created_at desc";
+
+        if ($request->has('select_sort')) {
+            $slices = explode(' ', $request->input('select_sort'));
+            $sort_query[$slices[0]] = $slices[1];
+            $sorted = $request->input('select_sort');
+        }
+
         if($request->category !== null && $keyword !== null)
         {
-            $shops = Shop::where('category_id',$request->category)->where('name','like',"%{$keyword}%")->paginate(15);
+            $shops = Shop::where('category_id',$request->category)->where('name','like',"%{$keyword}%")->sortable($sort_query)->orderBy('created_at', 'desc')->paginate(16);
             $category = Category::find($request->category);
         }elseif($request->category !== null){
-            $shops = Shop::where('category_id',$request->category)->paginate(15);
+            $shops = Shop::where('category_id',$request->category)->sortable($sort_query)->orderBy('created_at', 'desc')->paginate(16);
             $category = Category::find($request->category);
         }elseif($keyword !== null){
-            $shops = Shop::where('name','like',"%{$keyword}%")->paginate(15);
+            $shops = Shop::where('name','like',"%{$keyword}%")->sortable($sort_query)->orderBy('created_at', 'desc')->paginate(16);
             $category = null; 
         }else{
-            $shops = Shop::paginate(15);
+            $shops = Shop::sortable($sort_query)->orderBy('created_at', 'desc')->paginate(16);
             $category = null; 
         }
 
         $categories = Category::all();
 
-        return view('shops.index',compact('shops','category','categories','keyword'));
+        return view('shops.index',compact('shops','category','categories','keyword', 'sorts', 'sorted'));
     }
 
     /**
@@ -78,7 +92,7 @@ class ShopController extends Controller
     public function show(Shop $shop)
     {
         $user = Auth::user();
-        $reviews = $shop->reviews()->paginate(5);
+        $reviews = $shop->reviews()->paginate(8);
 
         return view('shops.show', compact('shop','reviews','user'));
     }

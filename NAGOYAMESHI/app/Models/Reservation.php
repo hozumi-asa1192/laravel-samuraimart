@@ -18,4 +18,8 @@ class Reservation extends Model
     {
         return $this->belongsTo(Shop::class);
     }
+
+    protected $reservations = [
+        'reserved_date' => 'date',
+    ];
 }

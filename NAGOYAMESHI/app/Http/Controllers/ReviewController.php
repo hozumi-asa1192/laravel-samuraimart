@@ -21,11 +21,6 @@ class ReviewController extends Controller
       {
         $user = Auth::user();
         
-              if($user->paid_member == 0)
-              {
-                 abort(404);
-              }
-              
         return view('reviews.create',compact('shop')); 
       }
   
